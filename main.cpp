@@ -71,7 +71,9 @@ int main()
     }
 
     return 0;
-} 
+}
+//--
+//helpers
 //--
 bool characteristic(const char numString[], int& c)
 {
@@ -90,8 +92,18 @@ bool mantissa(const char numString[], int& numerator, int& denominator)
 //--
 bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
 {
-    //you will have to come up with an algorithm to add the two numbers
+    //adding c1, n1 & d1 into one fraction
+    int new_num1 = (c1 * d1) + n1;
+    //adding c2, n2 & d2 into one fraction
+    int new_num2 = (c2 * d2) + n2;
+    
+    //multiplying the numerators by the opposite denominator & adding
+    int answer_num = (new_num1 * d2) + (new_num2 * d1);
+    //multiplying the denominators
+    int answer_denom = d1 * d2;
+
     //hard coded return value to make the main() work
+    /*
     result[0] = '4';
     result[1] = '.';
     result[2] = '1';
@@ -101,7 +113,7 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
     result[6] = '6';
     result[7] = '6';
     result[8] = '6';
-    result[9] = '\0';
+    result[9] = '\0';*/
 
     return true;
 }
