@@ -131,33 +131,29 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
         }
     }
     
-    
-    //*******to do
-    //char characteristic[] = ('0' + char_num);
-    
-    /*int char_length = 0;
-    while(characteristic[char_length] != '\0')
-    {
-        
-    }*/
-    
-    
-    
-    /*int remain = (answer_num % answer_denom);
-    int digit = (answer_num / answer_denom);
+    //filling result w/ mantissa digits starting from char_length
+    int remain = (answer_num % answer_denom);
     int dividend = (remain * 10);
-    for(int i = 0; i < (len - 1); i++)
+    int digit = (dividend / answer_denom);
+    for(int i = char_length; i < (len - 1); i++)
     {
-        result[i] = '0' + digit;
-        
-        digit = (dividend / answer_denom);
-        remain = (dividend % answer_denom);
-        dividend = (remain * 10);
-    }*/
+        //placing . between characteristic & mantissa
+        if(i == char_length)
+        {
+            result[i] = '.';
+        }
+        //setting result at pos i to each digit
+        else
+        {
+            result[i] = '0' + digit;
+            
+            remain = (dividend % answer_denom);
+            dividend = (remain * 10);
+            digit = (dividend / answer_denom);
+        }
+    }
     
     
-
-
     //hard coded return value to make the main() work
     /*
     result[0] = '4';
