@@ -74,6 +74,7 @@ int main()
 }
 //--
 //helpers
+
 //--
 bool characteristic(const char numString[], int& c)
 {
@@ -101,6 +102,61 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
     int answer_num = (new_num1 * d2) + (new_num2 * d1);
     //multiplying the denominators
     int answer_denom = d1 * d2;
+    //get the characteristic
+    int char_num = (answer_num / answer_denom);
+    
+    //finding number of digits in characteristic
+    int char_length = 0;
+    int temp_char = char_num;
+    while(temp_char > 0)
+    {
+        char_length++;
+        //mod dividing by 10 for each digit
+        temp_char = (temp_char / 10);
+    }
+    
+    //filling result w/ characteristic digits
+    for(int i = char_length; i >= 0; i--)
+    {
+        //placing \0 at end of characteristic
+        if(i == char_length)
+        {
+            result[i] = '\0';
+        }
+        //setting result at pos i to each digit
+        else
+        {
+            result[i] = (char_num % 10) + '0';
+            char_num = (char_num / 10);
+        }
+    }
+    
+    
+    //*******to do
+    //char characteristic[] = ('0' + char_num);
+    
+    /*int char_length = 0;
+    while(characteristic[char_length] != '\0')
+    {
+        
+    }*/
+    
+    
+    
+    /*int remain = (answer_num % answer_denom);
+    int digit = (answer_num / answer_denom);
+    int dividend = (remain * 10);
+    for(int i = 0; i < (len - 1); i++)
+    {
+        result[i] = '0' + digit;
+        
+        digit = (dividend / answer_denom);
+        remain = (dividend % answer_denom);
+        dividend = (remain * 10);
+    }*/
+    
+    
+
 
     //hard coded return value to make the main() work
     /*
