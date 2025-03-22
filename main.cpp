@@ -48,7 +48,7 @@ int main()
     d2 = 3; 
 
     //if the c-string can hold at least the characteristic
-    if(add(c1, n1, d1, c2, n2, d2, answer, 10))
+    if(subtract(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer 4.1666666 (cout stops printing at the null terminating character)
         cout<<"Answer: "<<answer<<endl;
@@ -98,7 +98,7 @@ int find_chara_length(int char_num)
 {
     //finding number of digits in characteristic
     int char_length = 0;
-    int temp_char = char_num;
+    int temp_char = abs(char_num);
     while(temp_char > 0)
     {
         char_length++;
@@ -149,7 +149,7 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
         
         //finding number of digits in characteristic
         int char_length = find_chara_length(char_num);
-        
+        //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
             return false;
@@ -218,11 +218,83 @@ bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
         
         //finding number of digits in characteristic
         int char_length = find_chara_length(char_num);
-        
+        //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
             return false;
         }
+        
+        //if the number is negative
+        if(new_num2 > new_num1)
+        {
+            //adding space for - sign & getting the abs val of the characteristic & numerator
+            char_length++;
+            char_num = abs(char_num);
+            answer_num = abs(answer_num);
+            
+            //filling result w/ characteristic digits
+            for(int i = char_length; i >= 0; i--)
+            {
+                //placing \0 at end of characteristic
+                if(i == char_length)
+                {
+                    result[i] = '\0';
+                }
+                //adding negative sign at the beginning
+                else if (i == 0)
+                {
+                    result[i] = '-';
+                }
+                //setting result at pos i to each digit
+                else
+                {
+                    result[i] = (char_num % 10) + '0';
+                    char_num = (char_num / 10);
+                }
+            }
+        }
+        //if the number is positive
+        else
+        {
+            //filling result w/ characteristic digits
+            for(int i = char_length; i >= 0; i--)
+            {
+                //placing \0 at end of characteristic
+                if(i == char_length)
+                {
+                    result[i] = '\0';
+                }
+                //setting result at pos i to each digit
+                else
+                {
+                    result[i] = (char_num % 10) + '0';
+                    char_num = (char_num / 10);
+                }
+            }
+        }
+        
+        //filling result w/ mantissa digits starting from char_length
+        int remain = (answer_num % answer_denom);
+        int dividend = (remain * 10);
+        int digit = (dividend / answer_denom);
+        for(int i = char_length; i < (len - 1); i++)
+        {
+            //placing . between characteristic & mantissa
+            if(i == char_length)
+            {
+                result[i] = '.';
+            }
+            //setting result at pos i to each digit
+            else
+            {
+                result[i] = '0' + digit;
+                
+                remain = (dividend % answer_denom);
+                dividend = (remain * 10);
+                digit = (dividend / answer_denom);
+            }
+        }
+        
         return true;
     }
 }
