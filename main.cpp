@@ -39,13 +39,13 @@ int main()
     int c2, n2, d2;
 
     //initialize the values
-    c1 = -1;
+    c1 = 1;
     n1 = 1;
     d1 = 2;
 
-    c2 = -2;
+    c2 = 2;
     n2 = 2;
-    d2 = 3; 
+    d2 = 3;
 
     //if the c-string can hold at least the characteristic
     if(add(c1, n1, d1, c2, n2, d2, answer, 10))
@@ -171,395 +171,9 @@ bool is_neg(int char_num, int answer_num, int answer_denom)
     }
 }
 //--
-/*bool is_sig_digit(int digit, int prev_digit, int index)
+void fill_result(int char_length, int char_num, int answer_num, int answer_denom, int len, bool neg, char result[])
 {
-    bool is_sig = true;
-    cout << prev_digit << endl;
-    
-    //default to at least 3 decimal places
-    if(index > 3)
-    {
-        //not significant if the new digit is a 0 or the same as the previous
-        if(digit == 0 && prev_digit > 0)
-        {
-            is_sig = false;
-        }
-        else if(digit == prev_digit)
-        {
-            is_sig = false;
-        }
-    }
-    
-    return is_sig;
-}*/
-//--
-/*void fill_characteristic(int char_length, int char_num)
-{
-    //filling result w/ characteristic digits
-    for(int i = char_length; i >= 0; i--)
-    {
-        //placing \0 at end of characteristic
-        if(i == char_length)
-        {
-            result[i] = '\0';
-        }
-        //setting result at pos i to each digit
-        else
-        {
-            result[i] = (char_num % 10) + '0';
-            char_num = (char_num / 10);
-        }
-    }
-}*/
-//--
-bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //checking for 0 division
-    if(d1 == 0 || d2 == 0) {
-        return false;
-    }
-    else
-    {
-        //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
-        
-        //multiplying the numerators by the opposite denominator & adding
-        int answer_num = (new_num1 * d2) + (new_num2 * d1);
-        //multiplying the denominators
-        int answer_denom = d1 * d2;
-        
-        //get the characteristic
-        int char_num = (answer_num / answer_denom);
-        bool neg = is_neg(char_num, answer_num, answer_denom);
-        
-        //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
-        //returning false if the characteristic exceeds result size
-        if(char_length > (len - 1))
-        {
-            return false;
-        }
-        
-        //filling result w/ characteristic digits
-        //if the number is negative
-        if(neg)
-        {
-            //adding space for - sign & getting the abs val of the characteristic & numerator
-            char_length++;
-            char_num = abs(char_num);
-            answer_num = abs(answer_num);
-            
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //adding negative sign at the beginning
-                else if (i == 0)
-                {
-                    result[i] = '-';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        //if the number is positive
-        else
-        {
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        
-        //only add a decimal & mantissa if the answer is not a whole number
-        if(answer_num % answer_denom != 0)
-        {
-            //filling result w/ mantissa digits starting from char_length
-            int remain = (answer_num % answer_denom);
-            int dividend = (remain * 10);
-            int digit = (dividend / answer_denom);
-            for(int i = char_length; i < (len - 1); i++)
-            {
-                //placing . between characteristic & mantissa
-                if(i == char_length)
-                {
-                    result[i] = '.';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = '0' + digit;
-                    
-                    remain = (dividend % answer_denom);
-                    dividend = (remain * 10);
-                    digit = (dividend / answer_denom);
-                }
-            }
-        }
-        
-        return true;
-    }
-}
-//--
-bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //checking for 0 division
-    if(d1 == 0 || d2 == 0) {
-        return false;
-    }
-    else
-    {
-        //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
-        
-        //multiplying the numerators by the opposite denominator & subtracting
-        int answer_num = (new_num1 * d2) - (new_num2 * d1);
-        //multiplying the denominators
-        int answer_denom = d1 * d2;
-        
-        //get the characteristic
-        int char_num = (answer_num / answer_denom);
-        bool neg = is_neg(char_num, answer_num, answer_denom);
-        
-        //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
-        //returning false if the characteristic exceeds result size
-        if(char_length > (len - 1))
-        {
-            return false;
-        }
-        
-        //if the number is negative
-        if(neg)
-        {
-            //adding space for - sign & getting the abs val of the characteristic & numerator
-            char_length++;
-            char_num = abs(char_num);
-            answer_num = abs(answer_num);
-            
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //adding negative sign at the beginning
-                else if (i == 0)
-                {
-                    result[i] = '-';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        //if the number is positive
-        else
-        {
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        
-        //only add a decimal & mantissa if the answer is not a whole number
-        if(answer_num % answer_denom != 0)
-        {
-            //filling result w/ mantissa digits starting from char_length
-            int remain = (answer_num % answer_denom);
-            int dividend = (remain * 10);
-            int digit = (dividend / answer_denom);
-            for(int i = char_length; i < (len - 1); i++)
-            {
-                //placing . between characteristic & mantissa
-                if(i == char_length)
-                {
-                    result[i] = '.';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = '0' + digit;
-                    
-                    remain = (dividend % answer_denom);
-                    dividend = (remain * 10);
-                    digit = (dividend / answer_denom);
-                }
-            }
-        }
-        
-        return true;
-    }
-}
-//--
-bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //checking for 0 division
-    if(d1 == 0 || d2 == 0) {
-        return false;
-    }
-    else
-    {
-        //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
-        
-        //multiplying the fractions together
-        int answer_num = new_num1 * new_num2;
-        int answer_denom = d1 * d2;
-        
-        //get the characteristic
-        int char_num = (answer_num / answer_denom);
-        bool neg = is_neg(char_num, answer_num, answer_denom);
-        
-        //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
-        //returning false if the characteristic exceeds result size
-        if(char_length > (len - 1))
-        {
-            return false;
-        }
-        
-        //if the number is negative
-        if(neg)
-        {
-            //adding space for - sign & getting the abs val of the characteristic & numerator
-            char_length++;
-            char_num = abs(char_num);
-            answer_num = abs(answer_num);
-            
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //adding negative sign at the beginning
-                else if (i == 0)
-                {
-                    result[i] = '-';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        //if the number is positive
-        else
-        {
-            //filling result w/ characteristic digits
-            for(int i = char_length; i >= 0; i--)
-            {
-                //placing \0 at end of characteristic
-                if(i == char_length)
-                {
-                    result[i] = '\0';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = (char_num % 10) + '0';
-                    char_num = (char_num / 10);
-                }
-            }
-        }
-        
-        //only add a decimal & mantissa if the answer is not a whole number
-        if(answer_num % answer_denom != 0)
-        {
-            //filling result w/ mantissa digits starting from char_length
-            int remain = (answer_num % answer_denom);
-            int dividend = (remain * 10);
-            int digit = (dividend / answer_denom);
-            for(int i = char_length; i < (len - 1); i++)
-            {
-                //placing . between characteristic & mantissa
-                if(i == char_length)
-                {
-                    result[i] = '.';
-                }
-                //setting result at pos i to each digit
-                else
-                {
-                    result[i] = '0' + digit;
-                    
-                    remain = (dividend % answer_denom);
-                    dividend = (remain * 10);
-                    digit = (dividend / answer_denom);
-                }
-            }
-        }
-        
-        return true;
-    }
-}
-//--
-bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
-{
-    //converting into two fractions
-    int new_num1 = find_numerator(c1, n1, d1);
-    //swapping the numerator & denominator of 2nd fraction
-    int new_num2 = d2;
-    int new_denom2 = find_numerator(c2, n2, d2);
-    
-    //multiplying the fractions together
-    int answer_num = new_num1 * new_num2;
-    int answer_denom = d1 * new_denom2;
-    
-    //get the characteristic
-    int char_num = (answer_num / answer_denom);
-    bool neg = is_neg(char_num, answer_num, answer_denom);
-    
-    //finding number of digits in characteristic
-    int char_length = find_char_length(char_num);
-    //returning false if the characteristic exceeds result size
-    if(char_length > (len - 1))
-    {
-        return false;
-    }
-    
+    //fill characteristic
     //if the number is negative
     if(neg)
     {
@@ -567,7 +181,7 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
         char_length++;
         char_num = abs(char_num);
         answer_num = abs(answer_num);
-        //also getting the abs val of the denominator since the second fraction gets flipped
+        //also getting the abs val of the denominator for negative division cases
         answer_denom = abs(answer_denom);
         
         //filling result w/ characteristic digits
@@ -611,6 +225,7 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
         }
     }
     
+    //fill mantissa
     //only add a decimal & mantissa if the answer is not a whole number
     if(answer_num % answer_denom != 0)
     {
@@ -637,5 +252,156 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
         }
     }
     
-    return true;
+    //remove trailing zeroes
+    for(int i = (len - 2); i > char_length; i--)
+    {
+        while(result[i] == '0')
+        {
+            result[i] = '\0';
+        }
+    }
+}
+//--
+bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+{
+    //checking for 0 division
+    if(d1 == 0 || d2 == 0) {
+        return false;
+    }
+    else
+    {
+        //converting into two fractions
+        int new_num1 = find_numerator(c1, n1, d1);
+        int new_num2 = find_numerator(c2, n2, d2);
+        
+        //multiplying the numerators by the opposite denominator & adding
+        int answer_num = (new_num1 * d2) + (new_num2 * d1);
+        //multiplying the denominators
+        int answer_denom = d1 * d2;
+        
+        //get the characteristic
+        int char_num = (answer_num / answer_denom);
+        bool neg = is_neg(char_num, answer_num, answer_denom);
+        
+        //finding number of digits in characteristic
+        int char_length = find_char_length(char_num);
+        //returning false if the characteristic exceeds result size
+        if(char_length > (len - 1))
+        {
+            return false;
+        }
+        
+        //filling result w/ characteristic & mantissa
+        fill_result(char_length, char_num, answer_num, answer_denom, len, neg, result);
+        
+        return true;
+    }
+}
+//--
+bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+{
+    //checking for 0 division
+    if(d1 == 0 || d2 == 0) {
+        return false;
+    }
+    else
+    {
+        //converting into two fractions
+        int new_num1 = find_numerator(c1, n1, d1);
+        int new_num2 = find_numerator(c2, n2, d2);
+        
+        //multiplying the numerators by the opposite denominator & subtracting
+        int answer_num = (new_num1 * d2) - (new_num2 * d1);
+        //multiplying the denominators
+        int answer_denom = d1 * d2;
+        
+        //get the characteristic
+        int char_num = (answer_num / answer_denom);
+        bool neg = is_neg(char_num, answer_num, answer_denom);
+        
+        //finding number of digits in characteristic
+        int char_length = find_char_length(char_num);
+        //returning false if the characteristic exceeds result size
+        if(char_length > (len - 1))
+        {
+            return false;
+        }
+        
+        //filling result w/ characteristic & mantissa
+        fill_result(char_length, char_num, answer_num, answer_denom, len, neg, result);
+        
+        return true;
+    }
+}
+//--
+bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+{
+    //checking for 0 division
+    if(d1 == 0 || d2 == 0) {
+        return false;
+    }
+    else
+    {
+        //converting into two fractions
+        int new_num1 = find_numerator(c1, n1, d1);
+        int new_num2 = find_numerator(c2, n2, d2);
+        
+        //multiplying the fractions together
+        int answer_num = new_num1 * new_num2;
+        int answer_denom = d1 * d2;
+        
+        //get the characteristic
+        int char_num = (answer_num / answer_denom);
+        bool neg = is_neg(char_num, answer_num, answer_denom);
+        
+        //finding number of digits in characteristic
+        int char_length = find_char_length(char_num);
+        //returning false if the characteristic exceeds result size
+        if(char_length > (len - 1))
+        {
+            return false;
+        }
+        
+        //filling result w/ characteristic & mantissa
+        fill_result(char_length, char_num, answer_num, answer_denom, len, neg, result);
+        
+        return true;
+    }
+}
+//--
+bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
+{
+    //checking for 0 division
+    if(d1 == 0 || d2 == 0) {
+        return false;
+    }
+    else
+    {
+        //converting into two fractions
+        int new_num1 = find_numerator(c1, n1, d1);
+        //swapping the numerator & denominator of 2nd fraction
+        int new_num2 = d2;
+        int new_denom2 = find_numerator(c2, n2, d2);
+        
+        //multiplying the fractions together
+        int answer_num = new_num1 * new_num2;
+        int answer_denom = d1 * new_denom2;
+        
+        //get the characteristic
+        int char_num = (answer_num / answer_denom);
+        bool neg = is_neg(char_num, answer_num, answer_denom);
+        
+        //finding number of digits in characteristic
+        int char_length = find_char_length(char_num);
+        //returning false if the characteristic exceeds result size
+        if(char_length > (len - 1))
+        {
+            return false;
+        }
+        
+        //filling result w/ characteristic & mantissa
+        fill_result(char_length, char_num, answer_num, answer_denom, len, neg, result);
+        
+        return true;
+    }
 }
