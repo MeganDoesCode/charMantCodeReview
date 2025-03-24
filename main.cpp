@@ -39,11 +39,11 @@ int main()
     int c2, n2, d2;
 
     //initialize the values
-    c1 = 1;
+    c1 = -1;
     n1 = 1;
     d1 = 2;
 
-    c2 = 2;
+    c2 = -2;
     n2 = 2;
     d2 = 3; 
 
@@ -60,6 +60,28 @@ int main()
     }
 
     if(subtract(c1, n1, d1, c2, n2, d2, answer, 10))
+    {
+        //display string with answer
+        cout<<"Answer: "<<answer<<endl;
+    }
+    else
+    {
+        //display error message
+        cout<<"Error on divide"<<endl;
+    }
+    
+    if(multiply(c1, n1, d1, c2, n2, d2, answer, 10))
+    {
+        //display string with answer
+        cout<<"Answer: "<<answer<<endl;
+    }
+    else
+    {
+        //display error message
+        cout<<"Error on divide"<<endl;
+    }
+    
+    if(divide(c1, n1, d1, c2, n2, d2, answer, 10))
     {
         //display string with answer
         cout<<"Answer: "<<answer<<endl;
@@ -132,6 +154,11 @@ bool is_neg(int char_num, int answer_num, int answer_denom)
     {
         return true;
     }
+    //special case in divide -- answer should be positive when two negatives are divided
+    else if(char_num == 0 && answer_denom < 0 && answer_num < 0)
+    {
+        return false;
+    }
     //if char_num is 0 but the answer is negative (ex. -0.5625)
     else if(char_num == 0 && (answer_num < 0 || answer_denom < 0))
     {
@@ -143,6 +170,28 @@ bool is_neg(int char_num, int answer_num, int answer_denom)
         return false;
     }
 }
+//--
+/*bool is_sig_digit(int digit, int prev_digit, int index)
+{
+    bool is_sig = true;
+    cout << prev_digit << endl;
+    
+    //default to at least 3 decimal places
+    if(index > 3)
+    {
+        //not significant if the new digit is a 0 or the same as the previous
+        if(digit == 0 && prev_digit > 0)
+        {
+            is_sig = false;
+        }
+        else if(digit == prev_digit)
+        {
+            is_sig = false;
+        }
+    }
+    
+    return is_sig;
+}*/
 //--
 /*void fill_characteristic(int char_length, int char_num)
 {
