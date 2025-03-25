@@ -12,6 +12,11 @@ bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
 bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len);
 
+int find_numerator(int characteristic, int num, int denom);
+int find_characteristic_length(int char_num);
+bool is_neg(int char_num, int answer_num, int answer_denom);
+void fill_result(int char_length, int char_num, int answer_num, int answer_denom, int len, bool neg, char result[]);
+
 int main()
 {
     //this c-string, or array of 8 characters, ends with the null terminating character '\0'
@@ -123,7 +128,7 @@ int find_numerator(int characteristic, int num, int denom)
     }
 }
 //--
-int find_char_length(int char_num)
+int find_characteristic_length(int char_num)
 {
     //finding number of digits in characteristic
     int char_length = 0;
@@ -284,7 +289,7 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
         bool neg = is_neg(char_num, answer_num, answer_denom);
         
         //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
+        int char_length = find_characteristic_length(char_num);
         //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
@@ -320,7 +325,7 @@ bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
         bool neg = is_neg(char_num, answer_num, answer_denom);
         
         //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
+        int char_length = find_characteristic_length(char_num);
         //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
@@ -355,7 +360,7 @@ bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
         bool neg = is_neg(char_num, answer_num, answer_denom);
         
         //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
+        int char_length = find_characteristic_length(char_num);
         //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
@@ -392,7 +397,7 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
         bool neg = is_neg(char_num, answer_num, answer_denom);
         
         //finding number of digits in characteristic
-        int char_length = find_char_length(char_num);
+        int char_length = find_characteristic_length(char_num);
         //returning false if the characteristic exceeds result size
         if(char_length > (len - 1))
         {
