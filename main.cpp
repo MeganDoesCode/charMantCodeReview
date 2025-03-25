@@ -111,15 +111,15 @@ bool mantissa(const char numString[], int& numerator, int& denominator)
 }
 //--
 //MATH HELPERS
-int find_numerator(int chara, int num, int denom)
+int find_numerator(int characteristic, int num, int denom)
 {
-    if(chara < 0)
+    if(characteristic < 0)
     {
-        return ((abs(chara) * denom) + num) * -1;
+        return ((abs(characteristic) * denom) + num) * -1;
     }
     else
     {
-        return (chara * denom) + num;
+        return (characteristic * denom) + num;
     }
 }
 //--
@@ -271,11 +271,11 @@ bool add(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int len)
     else
     {
         //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
+        int numerator1 = find_numerator(c1, n1, d1);
+        int numerator2 = find_numerator(c2, n2, d2);
         
         //multiplying the numerators by the opposite denominator & adding
-        int answer_num = (new_num1 * d2) + (new_num2 * d1);
+        int answer_num = (numerator1 * d2) + (numerator2 * d1);
         //multiplying the denominators
         int answer_denom = d1 * d2;
         
@@ -307,11 +307,11 @@ bool subtract(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
     else
     {
         //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
+        int numerator1 = find_numerator(c1, n1, d1);
+        int numerator2 = find_numerator(c2, n2, d2);
         
         //multiplying the numerators by the opposite denominator & subtracting
-        int answer_num = (new_num1 * d2) - (new_num2 * d1);
+        int answer_num = (numerator1 * d2) - (numerator2 * d1);
         //multiplying the denominators
         int answer_denom = d1 * d2;
         
@@ -343,11 +343,11 @@ bool multiply(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int
     else
     {
         //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
-        int new_num2 = find_numerator(c2, n2, d2);
+        int numerator1 = find_numerator(c1, n1, d1);
+        int numerator2 = find_numerator(c2, n2, d2);
         
         //multiplying the fractions together
-        int answer_num = new_num1 * new_num2;
+        int answer_num = numerator1 * numerator2;
         int answer_denom = d1 * d2;
         
         //get the characteristic
@@ -378,13 +378,13 @@ bool divide(int c1, int n1, int d1, int c2, int n2, int d2, char result[], int l
     else
     {
         //converting into two fractions
-        int new_num1 = find_numerator(c1, n1, d1);
+        int numerator1 = find_numerator(c1, n1, d1);
         //swapping the numerator & denominator of 2nd fraction
-        int new_num2 = d2;
+        int numerator2 = d2;
         int new_denom2 = find_numerator(c2, n2, d2);
         
         //multiplying the fractions together
-        int answer_num = new_num1 * new_num2;
+        int answer_num = numerator1 * numerator2;
         int answer_denom = d1 * new_denom2;
         
         //get the characteristic
